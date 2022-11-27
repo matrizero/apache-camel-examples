@@ -2,6 +2,7 @@ package com.matrizero.camelrestdsl.routes;
 
 import com.matrizero.camelrestdsl.model.Contract;
 import com.matrizero.camelrestdsl.processor.ContractValidateProcessor;
+import com.matrizero.camelrestdsl.transforms.UpperCaseContentTransformer;
 import org.apache.camel.Exchange;
 import org.apache.camel.builder.RouteBuilder;
 import org.apache.camel.component.jackson.JacksonDataFormat;
@@ -23,6 +24,7 @@ public class DirectConditionContractRoute extends RouteBuilder {
 //                .marshal(new JacksonDataFormat(Contract.class))
 //                .log("${body}")
                 .process(processor)
+                .bean(new UpperCaseContentTransformer(), "TransformContent")
                 .choice()
                     .when(exchangeProperty("verifyAssign").isEqualTo(Boolean.TRUE))
                 //.when(exchange -> exchange.getIn().getBody(Contract.class).getAssign()) // == Boolean.TRUE
